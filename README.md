@@ -4,6 +4,26 @@
 
 This repo contains instructions for building a Duckiebot DB21M 'clone' from discrete modules available on Aliexpress or Amazon (or Ebay...)  [Duckiebot](https://get.duckietown.com/collections/dt-robots/products/duckiebot-db21-m) is a ROS-based robot used to teach autonomous robot navigation and behavior as part of the [Duckietown curriculum](https://www.duckietown.org/) and [MOOC](https://www.edx.org/course/self-driving-cars-with-duckietown).  
 
+![DIYDuckie cardboard prototype](images/diyduckie_01.jpg)
+DIYDuckie cardboard prototype
+
+### Status
+- Created a proof of concept by mounting parts on a pizza box.  All components worked; I could echo rostopic messages and see the parts in http://duckiebot.local/health/components (insert your duckiebot name for 'duckiebot').  Dashboard shows video and telmetry.  Motors move when using the `dts duckiebot keyboard_control` command.
+- Did some initial layout experiments for a two-layer chassis using paper-cutouts of the parts.  Found that a 12cm wide x 17cm long chassis would work.  This could be made smaller if we can get rid of the second PCA9685; but that will have to wait until I have time to make a pull request to the project to support delivering PWM directly from the Jetson Nano.
+- Created prototype using a cardboard chassis so I could finalize component placement and wire routing.  The cardboard layers make it easy to cut holes and fine-tune placements.  I have a layout that works.  I've tried a couple of power solutions. 
+  - I first tried a 5v/5amp buck converter and an RC LIPO battery.  I've used that solution in other projects but here it did not work because routing the 5v into the Jetson Nano via the 40pin header would not boot the Nano.  This is apparently a common issue when trying to power via the 40 pin header using a buck converter.  So we really need to power the Jetson via the USB-C connector if we are using a battery.
+  - Next I tried two USB batteries; one to power the Jetson Nano, the other to power everthing else.  This worked better, but still had a problem.  The Jetson Nano booted and ran well.  However, the USB batteries I am using would not see enough power pulled from the other modules and would shutdown.  If I ran the motors then everything was fine becaue enough power was being pulled to keep the battery awake.  But 10 seconds after I stopped the motors, the battery would go to sleep.  The other issue is these USB batteries are _heavy_, so the it's not great to require two of them.
+  - I have two other buck-converter solutions on order that will terminate in USB connections, so I can feed the Jetson Nano via the USB-C connector.  I'm hoping I only need a single RC LIPO battery because the battery is the single heaviest component.  
+
+
+### To do
+- [ ] Finalize the power system.  That will then allow us to finalize the length on the stand-offs between the two layers.
+- [ ] Optimize the wire routing; use more solid core wiring so routing can be precise.
+- [ ] Create a hobby-board version of the chassis using the final component positions and wire routing.  This will be the first fully functional version and so I will add a lot more documentation and images on the build process.
+- [ ] fork the dt-duckiebot-interface repo and modify it to allow PWM to be generate directly from the Nano.  Update the configuration to support a `diydb` model.
+- [ ] redesign the chassis without the second PCA9685.
+- [ ] Create a 3D printable chassis
+
 
 ## Parts
 
