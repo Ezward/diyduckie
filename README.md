@@ -16,12 +16,14 @@ Video of [DIYDuckie's first drive](https://youtu.be/LFufYF_5Ot4)
   - I first tried a 5v/5amp buck converter and an RC LIPO battery.  I've used that solution in other projects but here it did not work because routing the 5v into the Jetson Nano via the 40pin header would not boot the Nano.  This is apparently a common issue when trying to power via the 40 pin header using a buck converter.  So we really need to power the Jetson via the USB-C connector if we are using a battery.
   - Next I tried two USB batteries; one to power the Jetson Nano, the other to power everthing else.  This worked better, but still had a problem.  The Jetson Nano booted and ran well.  However, the USB batteries I am using would not see enough power pulled from the other modules and would shutdown.  If I ran the motors then everything was fine becaue enough power was being pulled to keep the battery awake.  But 10 seconds after I stopped the motors, the battery would go to sleep.  The other issue is these USB batteries are _heavy_, so the it's not great to require two of them.
   - I have two other buck-converter solutions on order that will terminate in USB connections, so I can feed the Jetson Nano via the USB-C connector.  I'm hoping I only need a single RC LIPO battery because the battery is the single heaviest component.  
-
-
+- I solved the power issue by using an [Anker PowerCore 13000 USB Battery](https://www.amazon.com/gp/product/B00Z9QVE4Q/ref=ppx_yo_dt_b_search_asin_title).  This battery outputs 3 amps and has two USB ports, which made it easy to route power to the USB-C port on the Jetson Nano and to supply separate power for the Sensors, LEDs, and OLED screen.
+- I created a new bottom platform using 1/8" hobby plywood.  I kept the upper platform in cardboard because it is plenty stiff and it is lighter than the plywood.  The battery resides on the bottom platform.  The remaining task is to mount the RGB LEDs, but that will be simple compared to everything else.
+- I've been able to test the DIYDuckie in this new prototype and it works well.  It can be remote-controlled using the `dts duckiebot keyboard_control <duckiename>` command and video can be streamed in the dashboard.
+- The next step is to modify the ROS code so apply the physical configuration of this robot; wheel radius/circumference, wheel base, min/max rpm of motors, number of encoder ticks per rotation.  This is all so the kinematic model and speed control will work correctly.  I think I may also need to set the offset of the camera from the robot center.
 ### To do
-- [ ] Finalize the power system.  That will then allow us to finalize the length on the stand-offs between the two layers.
-- [ ] Optimize the wire routing; use more solid core wiring so routing can be precise.
-- [ ] Create a hobby-board version of the chassis using the final component positions and wire routing.  This will be the first fully functional version and so I will add a lot more documentation and images on the build process.
+- [x] Finalize the power system.  That will then allow us to finalize the length on the stand-offs between the two layers.
+- [x] Optimize the wire routing; use more solid core wiring so routing can be precise.
+- [x] Create a hobby-board version of the chassis using the final component positions and wire routing.  This will be the first fully functional version and so I will add a lot more documentation and images on the build process.
 - [ ] fork the dt-duckiebot-interface repo and modify it to allow PWM to be generate directly from the Nano.  Update the configuration to support a `diydb` model.
 - [ ] redesign the chassis without the second PCA9685.
 - [ ] Create a 3D printable chassis
