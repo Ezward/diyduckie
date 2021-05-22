@@ -7,6 +7,8 @@ This repo contains instructions for building a Duckiebot DB21M 'clone' from disc
 ![DIYDuckie cardboard prototype](images/diyduckie_01.jpg)
 DIYDuckie cardboard prototype
 
+Video of [DIYDuckie's first drive](https://youtu.be/LFufYF_5Ot4)
+
 ### Status
 - Created a proof of concept by mounting parts on a pizza box.  All components worked; I could echo rostopic messages and see the parts in http://duckiebot.local/health/components (insert your duckiebot name for 'duckiebot').  Dashboard shows video and telmetry.  Motors move when using the `dts duckiebot keyboard_control` command.
 - Did some initial layout experiments for a two-layer chassis using paper-cutouts of the parts.  Found that a 12cm wide x 17cm long chassis would work.  This could be made smaller if we can get rid of the second PCA9685; but that will have to wait until I have time to make a pull request to the project to support delivering PWM directly from the Jetson Nano.
