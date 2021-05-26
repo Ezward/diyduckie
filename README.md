@@ -67,7 +67,9 @@ Video of [DIYDuckie's first drive](https://youtu.be/LFufYF_5Ot4)
     *   [aliexpress](https://www.aliexpress.com/item/4000088283170.html)
 *   5v Buck Converter (if you use a LIPO battery)
     *   [amazon](https://www.amazon.com/EPBOWPT-Converter-Regulator-Regulated-Transformer/dp/B01M0323MJ/ref=pd_rhf_se_s_rp_c_3_7)
-
+*   TCA9548A I2C Multiplexer (only necessary if using more than one VL53L01X time of flight sensor)
+    *   [aliexpress](https://www.aliexpress.com/item/4000067621113.html)
+    *   [amazon](https://www.amazon.com/HiLetgo-TCA9548A-Multiplexer-Breakout-Expansion/dp/B06XXG5G3L/ref=sr_1_1_sspa)
 
 ## Related Repositories and Configuration
 
