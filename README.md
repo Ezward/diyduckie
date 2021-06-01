@@ -70,6 +70,10 @@ Video of [DIYDuckie's first drive](https://youtu.be/LFufYF_5Ot4)
 *   TCA9548A I2C Multiplexer (only necessary if using more than one VL53L01X time of flight sensor)
     *   [aliexpress](https://www.aliexpress.com/item/4000067621113.html)
     *   [amazon](https://www.amazon.com/HiLetgo-TCA9548A-Multiplexer-Breakout-Expansion/dp/B06XXG5G3L/ref=sr_1_1_sspa)
+*   Action Camera Base
+    *   https://www.amazon.com/gp/product/B071HTFT5R/ref=ppx_yo_dt_b_search_asin_title
+*   3D Printed camera holder
+    *   https://www.thingiverse.com/thing:4874002
 
 ## Related Repositories and Configuration
 
