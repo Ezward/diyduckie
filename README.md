@@ -103,7 +103,20 @@ I would recommend a motor with the encoder on the motor's drive shaft rather tha
 
 I think generic gear motors with optical encoders would work if you tweak the config to handle the lower ticks/revolution of the wheel. See my project for sources for the motors, encoder wheels and optocouplers here:[ https://github.com/Ezward/Esp32CameraRover2/blob/master/docs/building_the_rover.md](https://github.com/Ezward/Esp32CameraRover2/blob/master/docs/building_the_rover.md)
 
+You will probably need to modify the wheel encoder config in the `duckietown/dt-duckiebot-interface` container with the pulse per wheel revolution for your motors/encoders.  My motor has 7 ppr (pulses-per-revolution) of the motor shaft and there is a 150:1 gear reduction on the output shaft, so each time the output shaft (and so the wheel) turns once, the motor shaft turns 150 times.  So the total pulses-per-wheel-revolution = 7 * 150.  The nominal PPR for the DB21m duckiebot is 135 pulses-per-wheel revolution; so I had to edit the config. 
+    1.   ssh into the duckiebot; `ssh duckie@DUCKIEBOT.local` where DUCKIEBOT is the name of you duckiebot.  Default password in 'quackquack'
+    2.   list the containers running on the duckiebot; `docker ps`
+    3.   find the `duckietown/dt-duckiebot-interface` container and get it's id (in the leftmost column), it will be a 12 digit hexadecimal number.
+    4.   open a bash shell in the container; `docker exec -it CONTAINER /bin/bash` where CONTAINER is the 12 digit hex id of the container.
+    5.   Once in a shell in the container, cd into the wheel encoder package; `cd wheel_encoder/config/wheel_encoder_node`
+    6.   Once in the wheel encoder package config folder, edit the files `left_wheel.yaml` and `right_wheel.yaml` and change the `resolution` value.  Note that if you change the gpio pin that reads the encoder, you will also need to edit this file and update the `gpio` value.  I did not have to do this because I used the defaults (as specified in wiring charts below).  So my left_wheel.yaml ends up looking like this;
 
+```
+gpio: 18
+resolution: 1050
+configuration: "left"
+publish_frequency: 30
+```
 
 *   servo driver looks like generic I2C PCA9685 server driver board. This is used to generate PWM signals using I2C commands. Duckiebot uses it to control LEDs (see LED emitter package).
     *   amazon generic:[ https://www.amazon.com/Organizer-Channel-PCA9685-Arduino-Raspberry/dp/B07Z8R2YB9/ref=sr_1_17](https://rads.stackoverflow.com/amzn/click/com/B07Z8R2YB9)
