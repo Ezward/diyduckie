@@ -4,6 +4,8 @@
 
 This repo contains instructions for building a Duckiebot DB21M 'clone' from discrete modules available on Aliexpress or Amazon (or Ebay...)  [Duckiebot](https://get.duckietown.com/collections/dt-robots/products/duckiebot-db21-m) is a ROS-based robot used to teach autonomous robot navigation and behavior as part of the [Duckietown curriculum](https://www.duckietown.org/) and [MOOC](https://www.edx.org/course/self-driving-cars-with-duckietown).  
 
+If you like the idea of a DIY Duckiebot, please star this repo, it will help me keep going.  Thanks!
+
 ![DIYDuckie cardboard prototype](images/diyduckie_01.jpg)
 DIYDuckie cardboard prototype
 
