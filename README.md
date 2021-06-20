@@ -425,7 +425,7 @@ I really have no idea why one motor uses GPIO pins for direction and the other u
 Note: the TB6612FNG has a standby pin( STBY) that must be pull high to enable output to the motors, so below you will see it connected to +3.3v for this purpose.
 
 
-##### Motor 1
+##### Motor 1 (Right wheel)
 
 
 ```
@@ -449,7 +449,7 @@ Note: the TB6612FNG has a standby pin( STBY) that must be pull high to enable ou
 
 
 
-##### Motor 2 (original code for DB21)
+##### Motor 2 (Left Wheel)
 
 
 ```
@@ -473,7 +473,7 @@ Note: the TB6612FNG has a standby pin( STBY) that must be pull high to enable ou
 
 
 
-##### Motor2 (modified to only use PCA9685 - required configuration change)
+##### Motor2 (Left wheel: modified to only use PCA9685 - requires configuration change)
 
 
 ```
