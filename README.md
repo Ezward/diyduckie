@@ -120,6 +120,9 @@ configuration: "left"
 publish_frequency: 30
 ```
 
+An important thing to note in this file is that the gpio is based on the broadcom SOC gpio number of the RaspberryPi, _not_ the pin number on the board.  More on this below in the wiring section.
+
+  
 *   servo driver looks like generic I2C PCA9685 server driver board. This is used to generate PWM signals using I2C commands. Duckiebot uses it to control LEDs (see LED emitter package).
     *   amazon generic:[ https://www.amazon.com/Organizer-Channel-PCA9685-Arduino-Raspberry/dp/B07Z8R2YB9/ref=sr_1_17](https://rads.stackoverflow.com/amzn/click/com/B07Z8R2YB9)
     *   aliexpress generic: https://www.aliexpress.com/item/4000468996665.html
@@ -422,7 +425,20 @@ I really have no idea why one motor uses GPIO pins for direction and the other u
 
 - NOTE: I could see using the PCA9685 to generate the PWM values for the motor controller, since it creates a high resolution, rock solid PWM signal which offloads that work from the Jetson nano.  I even think you could mix LEDs and motor pwm; they just need to operate on the same PWM frequency.  What I don't understand is why two different ways to support the direction pins for the two motors.  If we only have the one PCA9685, then just use GPIO pins for direction of both motors; that is only 4 pins and they are available.  On the other hand, if there is a second PCA9685 when there are plenty of channels on that, so why not use those for both motors?  Finally, the Jetson Nano does support 2 hardware PWM pins, so why not use those?  So the configuration is weird.  I think it is probably this way because the PWM class is written assuming a PCA9685.  I think it would be worth a pull request to modify the code to allow the Nano or RaspberryPi 4 to generate the PWM, since both have two hardware PWM pins available; that would allow the DIY Duckiebot to drop the second PCA9685.  For now I've included the wiring for the default configuration.  I've also annotated an alternative that would use the the second PCA9685 exclusively; you would need to change the default config to enable this mode.
 
-Note: the TB6612FNG has a standby pin( STBY) that must be pull high to enable output to the motors, so below you will see it connected to +3.3v for this purpose.
+
+Note: the TB6612FNG has a standby pin( STBY) that must be driven high to enable output to the motors, so below you will see it connected to +3.3v for this purpose.
+
+
+In the wiring notes in this document, we are using the pin numbers as labelled on the Nano gpio header, also called board pin numbers.  It is important to understand that the Duckiebot software configuration related to the encoder input pins in `wheel_encoder/config/wheel_encoder_node/left_wheel.yaml` and `wheel_encoder/config/wheel_encoder_node/right_wheel.yaml` are _not_ using board numbering, but instead are using the Broadcom SOC gpio numbering as specified in [RaspberryPi pinouts](https://www.raspberrypi.org/documentation/usage/gpio/).  The Jetson Nano is not based on the Broadcom SOC, but the Jetson Nano version of the GPIO library accepts the broadcom values and maps these values to the correct pins on the board, so the Duckiebot code still works on a Nano.  The default configuration uses broadcom `gpio-18` and `gpio-19`, which are board header `pin-12` and `pin-35` respectively.  If you change wiring from what is shown below, then you will need to change the wheel encoder software configuration and you will have to figure out the broadcom gpio numbers for the board pins you use.  For convenience, here is a small table that maps the board pin numbers (as used in the motor wiring diagrams below) to the Broadcom SOC gpio numbers (as used in the wheel encoder config).
+
+
+```
+    Board Pin ... BCM (Broadcom gpio) pin
+       pin-12  =  gpio-18
+       pin-13  =  gpio-27
+       pin-15  =  gpio-22
+       pin-35  =  gpio-19
+```
 
 
 ##### Motor 1 (Right wheel)
@@ -440,8 +456,8 @@ Note: the TB6612FNG has a standby pin( STBY) that must be pull high to enable ou
                ch-08 <-----> PWM-A
                              A-OUT-1 <--> M2 motor +
                              A-OUT-2 <--> M1 motor -
-    pin-19 <----------------------------> enc-2
-    pin-23 <----------------------------> enc-1
+    pin-35 <----------------------------> enc-2
+    pin-15 <----------------------------> enc-1
                                           VCC <------------> 3.3v
                                           GND <--------------------> GND
 ---
@@ -464,8 +480,8 @@ Note: the TB6612FNG has a standby pin( STBY) that must be pull high to enable ou
     pin-31 <---------------> B-IN-2
                              A-OUT-1 <--> M2 motor +
                              A-OUT-2 <--> M1 motor -
-    pin-24 <----------------------------> enc-2
-    pin-18 <----------------------------> enc-1
+    pin-13 <----------------------------> enc-2
+    pin-12 <----------------------------> enc-1
                                           VCC <------------> 3.3v
                                           GND <--------------------> GND
 ---
@@ -488,18 +504,17 @@ Note: the TB6612FNG has a standby pin( STBY) that must be pull high to enable ou
                ch-01 <-----> PWM-B
                              A-OUT-1 <--> M2 motor +
                              A-OUT-2 <--> M1 motor -
-    pin-24 <----------------------------> enc-2
-    pin-18 <----------------------------> enc-1
+    pin-13 <----------------------------> enc-2
+    pin-12 <----------------------------> enc-1
                                           VCC <------------> 3.3v
-                                      GND <--------------------> GND
+                                          GND <--------------------> GND
 ---
 ```
 
 
-In addition, these PWM channels are configured to be on a PCA9685 at address 0x60.  The first PCA9685 that we added is dedicated to 5 RGB LEDs, so 15 of the 16 available PWM channels are occupied, so there is not room on that PWM controller anyway.  So we need to add a second PCA9685 in order to support the default HAT configuration for the motor controller.
-
-
 #### Add a second PCA9685 on bus 1 at address 0x60
+
+The default PWM channels are configured to be on a PCA9685 at address 0x60.  The first PCA9685 that we added is dedicated to 5 RGB LEDs, so 15 of the 16 available PWM channels are occupied, so there is not room on that PWM controller anyway.  So we need to add a second PCA9685 in order to support the default HAT configuration for the motor controller.
 
 By default the PCA9685 is at address 0x40.  However, there are a set of open jumper pads that can be used to alter the address by closing (soldering) the jumper pads.  The duckiebot software is setup to address this at 0x60.  Each pad adds a power of 2 to the default address of 0x40.  We can change the address of a PCA9685 to 0x60 by closing the  solder pad marked A5, which adds 2^5 = 0x20 to the address.  
 
