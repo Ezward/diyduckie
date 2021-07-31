@@ -50,6 +50,7 @@ Video of [DIYDuckie's first drive](https://youtu.be/LFufYF_5Ot4)
     *   [amazon sparkfun](https://rads.stackoverflow.com/amzn/click/com/B07PV1S8HX)
     *   [aliexpress generic](https://www.aliexpress.com/item/1005001803735348.html)
 *   D-shaft N20 Encoder motors x 2 
+    *   Any RPM between 40RPM and 75RPM would work well.  You want to take note of the gear ratio between the motor shaft and the output shaft (mine was 150:1) and the number of encoder pulse per revolution (mine was 7) so you can calculate pulses per rotation of the output shaft.  Those should be included with that motor's data sheet.  In my case PPR of output shaft is 7 * 150 = 1050 PPR.
     *   [amazon](https://www.amazon.com/Reduction-Multiple-Replacement-Velocity-Measurement/dp/B08DKJT2XF/ref=pd_sbs_4)
     *   [aliexpress](https://www.aliexpress.com/item/4000830235298.html)
 *   D-hole rubber wheel x 2
