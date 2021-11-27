@@ -442,7 +442,7 @@ In the wiring notes in this document, we are using the pin numbers as labelled o
 ```
 
 
-##### Motor 1 (Right wheel)
+##### Motor 1 (Left wheel)
 
 
 ```
@@ -466,7 +466,7 @@ In the wiring notes in this document, we are using the pin numbers as labelled o
 
 
 
-##### Motor 2 (Left Wheel)
+##### Motor 2 (Right Wheel)
 
 
 ```
@@ -490,7 +490,7 @@ In the wiring notes in this document, we are using the pin numbers as labelled o
 
 
 
-##### Motor2 (Left wheel: modified to only use PCA9685 - requires configuration change)
+##### Motor2 (Right wheel: modified to only use PCA9685 - requires configuration change)
 
 
 ```
